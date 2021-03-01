@@ -32,12 +32,21 @@
 				default() {
 					return []
 				}
+			},
+			showIndex: {
+				type: Number,
+				default: 0
+			}
+		},
+		watch: {
+			showIndex(newValue, oldValue) {
+				this.currentIndex = newValue
 			}
 		},
 		methods: {
 			clickItem(index, item) {
 				this.currentIndex = index;
-				this.$emit("clickItem", item)
+				this.$emit("clickItem", item, index)
 			}
 		}
 	}
@@ -49,6 +58,7 @@
 		background-color: #FFFFFF;
 		border-bottom: 1rpx solid #eeeeee;
 		display: flex;
+		height: 90rpx;
 		.tab_list {
 			flex: 1;
 			height: 90rpx;
