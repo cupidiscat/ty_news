@@ -35,4 +35,21 @@
 .icon-search:before {
   content: "\e7c9";
 }
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+.ellipsis2line{
+/*两行
+ */
+	text-overflow: -o-ellipsis-lastline;
+	overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 2;
+line-clamp: 2;
+-webkit-box-orient: vertical;
+}
 

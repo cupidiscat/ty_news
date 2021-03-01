@@ -55,6 +55,9 @@
   font-size: 30rpx;
   color: #333333;
 }
+.tab .tab_list .tab_list_box .active {
+  color: #f07373;
+}
 .tab .tab_shezhi {
   position: relative;
   width: 100rpx;

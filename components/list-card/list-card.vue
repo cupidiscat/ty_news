@@ -1,64 +1,65 @@
 <template>
 	<view class="card">
 		<!-- 普通模式 -->
-		<view v-if="mode === 'base'" class="normal-card">
+		<view v-if="model.mode === 'base'" class="normal-card">
 			<view class="normal-card-image">
-				<image src="../../static/logo.png" mode="aspectFill"></image>
+				<image :src="model.cover[0]" mode="aspectFill"></image>
 			</view>
 			<view class="normal-card-desc">
 				<view class="normal-card-desc-title ellipsis2line">
-					<text>文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题</text>
+					<text>{{model.title}}</text>
 				</view>
 				<view class="normal-card-desc-info">
 					<view class="normal-card-desc-info-tip">
-						前端开发
+						{{model.classify}}
 					</view>
 					<view class="normal-card-desc-info-readnum">
-						20阅读
+						{{model.browse_count}}阅读
 					</view>
 				</view>
 			</view>
 		</view>
 		
 		<!-- 多图模式 -->
-		<view v-if="mode === 'column'" class="column-card">
+		<view v-if="model.mode === 'column'" class="column-card">
 			<view class="column-card-title">
-				<text>文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题</text>
+				<text>{{model.title}}</text>
 			</view>
 			<view class="column-card-image">
 				<image 
-				src="../../static/logo.png" 
+				:src="item" 
 				mode="aspectFill"
-				v-for="item in 3"
+				v-for="(item, index) in model.cover"
+				v-if="index < 3"
 				:key="item"
 				>
 				</image>
 			</view>
 			<view class="column-card-desc">
 				<view class="column-card-desc-tip">
-					前端开发
+					{{model.classify}}
 				</view>
 				<view class="column-card-desc-readnum">
-					20阅读
+					{{model.browse_count}}阅读
 				</view>
 			</view>
 		</view>
 		
 		<!-- 大图模式 -->
-		<view v-if="mode === 'image'" class="image-card">
+		<view v-if="model.mode === 'image'" class="image-card">
 			<view class="image-card-image">
-				<image src="../../static/logo.png" mode="aspectFill"></image>
+				<image :src="model.cover[0]" mode="aspectFill"></image>
 			</view>
 			<view class="image-card-desc">
 				<view class="image-card-desc-title">
-					<text>文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题文章标题</text>
+					<text>{{model.title}}</text>
 				</view>
 				<view class="image-card-desc-info">
 					<view class="image-card-desc-info-tip">
-						前端开发
+						{{model.classify}}
 					</view>
 					<view class="image-card-desc-info-readnum">
-						20阅读
+						{{model.browse_count}}阅读
 					</view>
 				</view>
 			</view>
@@ -75,9 +76,11 @@
 			};
 		},
 		props: {
-			mode: {
-				type: String,
-				default: "base"
+			model: {
+				type: Object,
+				default() {
+					return {}
+				}
 			}
 		}
 	}

@@ -38,7 +38,11 @@
 				this.$api.get_label({
 					url: 'get_label'
 				}).then(res => {
-					console.log(res)
+					const { data } = res
+					data.unshift({
+						name: "全部"
+					})
+					// console.log(res)
 					this.labelList = res.data
 				})
 			},
