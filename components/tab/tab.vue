@@ -32,12 +32,21 @@
 				default() {
 					return []
 				}
+			},
+			showIndex: {
+				type: Number,
+				default: 0
+			}
+		},
+		watch: {
+			showIndex(newValue, oldValue) {
+				this.currentIndex = newValue
 			}
 		},
 		methods: {
 			clickItem(index, item) {
 				this.currentIndex = index;
-				this.$emit("clickItem", item)
+				this.$emit("clickItem", item, index)
 			}
 		}
 	}

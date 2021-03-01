@@ -1,20 +1,34 @@
 <template>
 	<view class="home">
 		<navbar></navbar>
-		<tab :list='list' @clickItem='clickItem'></tab>
+		<tab 
+		:list="labelList" 
+		@clickItem="clickItem"
+		:showIndex="showIndex"
+		></tab>
+		<list 
+		class="list" 
+		:list="labelList"
+		@change="change"
+		:showIndex="showIndex"
+		></list>
 	</view>
 </template>
 
 <script>
 	import tab from '../../../components/tab/tab.vue'
+	import list from '../../../components/list/list.vue'
+	
 	export default {
 		data() {
 			return {
-				list: []
+				labelList: [],
+				showIndex: 0
 			}
 		},
 		components: {
-			tab
+			tab,
+			list
 		},
 		onLoad() {
 			this.getLabel()
@@ -25,21 +39,34 @@
 					url: 'get_label'
 				}).then(res => {
 					console.log(res)
-					this.list = res.data
+					this.labelList = res.data
 				})
-				// this.$http({
-				// 	url: 'get_label'
-				// }).then(res => {
-				// 	console.log(res)
-				// })
 			},
-			clickItem(item) {
-				console.log(item)
+			clickItem(item, index) {
+				// console.log(item)
+				this.showIndex = index
+			},
+			change(currentIndex) {
+				this.showIndex = currentIndex
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
+	
+	page {
+		height: 100%;
+	}
+	
+	.home {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		.list {
+			flex: 1;
+			border: 1px solid #ff0000;
+		}
+	}
 	
 </style>
