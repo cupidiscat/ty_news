@@ -1,5 +1,5 @@
 <template>
-	<view class="card">
+	<view class="card" @click="toDetail">
 		<!-- 普通模式 -->
 		<view v-if="model.mode === 'base'" class="normal-card">
 			<view class="normal-card-image">
@@ -8,6 +8,7 @@
 			<view class="normal-card-desc">
 				<view class="normal-card-desc-title ellipsis2line">
 					<text>{{model.title}}</text>
+					<likes :ite="model"></likes>
 				</view>
 				<view class="normal-card-desc-info">
 					<view class="normal-card-desc-info-tip">
@@ -24,6 +25,7 @@
 		<view v-if="model.mode === 'column'" class="column-card">
 			<view class="column-card-title">
 				<text>{{model.title}}</text>
+				<likes :ite="model"></likes>
 			</view>
 			<view class="column-card-image">
 				<image 
@@ -31,7 +33,7 @@
 				mode="aspectFill"
 				v-for="(item, index) in model.cover"
 				v-if="index < 3"
-				:key="item"
+				:key="index"
 				>
 				</image>
 			</view>
@@ -53,6 +55,7 @@
 			<view class="image-card-desc">
 				<view class="image-card-desc-title">
 					<text>{{model.title}}</text>
+					<likes :ite="model"></likes>
 				</view>
 				<view class="image-card-desc-info">
 					<view class="image-card-desc-info-tip">
@@ -82,6 +85,11 @@
 					return {}
 				}
 			}
+		},
+		methods: {
+			toDetail() {
+				console.log("到详情页面")
+			}
 		}
 	}
 </script>
@@ -89,7 +97,7 @@
 <style lang="scss">
 	
 	.card {
-		padding: 30rpx;
+		padding: 30rpx 30rpx 0;
 		font-size: 30rpx;
 		color: #333333;
 		font-weight: 400;
@@ -119,13 +127,15 @@
 			flex-direction: column;
 			justify-content: space-between;
 			.normal-card-desc-title {
-				// text {
-				// 	overflow: hidden;
-				// 	text-overflow: ellipsis;
-				// 	display: -webkit-box;
-				// 	-webkit-line-clamp: 2;
-				// 	-webkit-box-orient: vertical;
-				// }
+				display: flex;
+				text {
+					overflow: hidden;
+					text-overflow: ellipsis;
+					display: -webkit-box;
+					-webkit-line-clamp: 2;
+					-webkit-box-orient: vertical;
+					flex: 1;
+				}
 			}
 			
 			.normal-card-desc-info {
@@ -149,12 +159,14 @@
 		box-shadow: 0 0 5px 1px rgba($color: #000000, $alpha: 0.1);
 		box-sizing: border-box;
 		.column-card-title {
+			display: flex;
 			text {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				display: -webkit-box;
 				-webkit-line-clamp: 2;
 				-webkit-box-orient: vertical;
+				flex: 1;
 			}
 		}
 		
@@ -215,12 +227,14 @@
 			justify-content: space-between;
 			.image-card-desc-title {
 				padding: 30rpx 0;
+				display: flex;
 				text {
 					overflow: hidden;
 					text-overflow: ellipsis;
 					display: -webkit-box;
 					-webkit-line-clamp: 2;
 					-webkit-box-orient: vertical;
+					flex: 1;
 				}
 			}
 			

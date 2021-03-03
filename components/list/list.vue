@@ -5,7 +5,7 @@
 		v-for="(item, index) in list"
 		:key="item.id"
 		>
-			<list-item :list="listData[index]" @loadmore="loadmore"></list-item>
+			<list-item :list="listData[index]" :loadObj="load[index]" @loadmore="loadmore"></list-item>
 		</swiper-item>
 	</swiper>
 </template>
@@ -37,8 +37,13 @@
 		},
 		watch: {
 			list(newValue) {
-				if(newValue.length === 0) return
 				this.getList(0)
+			},
+			showIndex(newValue) {
+				const list = this.listData[newValue];
+				if(!list || list.length === 0) {
+					this.getList(newValue)
+				}
 			}
 		},
 		methods: {
@@ -46,26 +51,47 @@
 				// console.log(event)
 				const { current } = event.detail
 				this.$emit("change", current)
-				this.getList(current)
 			},
 			getList(index) {
-				const data = this.listData[index]
-				if(data && data.length > 0) return
+				// console.log(this.list)
+				let obj = this.load[this.showIndex]
+				if(obj && obj.loading === "noMore") {
+					return
+				}
+				if(!obj) {
+					obj = {
+						pageNum: 1,
+						loading: "loading"
+					}
+				}
 				const { name } = this.list[index]
 				this.$api.get_list({
-					name: name
+					name,
+					page: obj.pageNum,
+					pageSize: this.pageSize
 				}).then(res => {
 					console.log(res)
-					// this.listData = res.data
-					this.$set(this.listData, index, res.data)
+					const newData = res.data;
+					if(newData.length < this.pageSize) {
+						obj.loading = "noMore"
+					}
+					const oldData = this.listData[this.showIndex] || []
+					oldData.push(...newData)
+					this.$set(this.load, index, obj)
+					// 强制渲染页面
+					// this.$forceUpdate()
+					this.$set(this.listData, index, oldData)
 				})
 			},
 			loadmore() {
 				console.log("加载更多")
+				let obj = this.load[this.showIndex]
+				obj.pageNum++
+				this.getList(this.showIndex)
 			}
 		},
 		created() {
-			
+			// this.getList(0)
 		}
 	}
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<list-scroll class="scroll" @loadmore="loadmore">
-		<list-card v-for="item in list" :model="item" :key="item.id"></list-card>
-		<uni-load-more iconType="snow" status="loading"></uni-load-more>
+		<list-card v-for="(item, index) in list" :model="item" :key="index"></list-card>
+		<uni-load-more v-if="list.length > 3" iconType="snow" :status="getLoadingStatus"></uni-load-more>
 	</list-scroll>
 </template>
 
@@ -22,16 +22,42 @@
 				default() {
 					return []
 				}
+			},
+			loadObj: {
+				type: Object,
+				default() {
+					return {}
+				}
 			}
+		},
+		watch: {
+			// loadObj(newValue) {
+			// 	console.log(newValue)
+			// }
 		},
 		components: {
 			listScroll,
 			listCard,
 			uniLoadMore
 		},
+		created() {
+			
+		},
+		mounted() {
+			
+		},
 		methods: {
 			loadmore() {
 				this.$emit("loadmore")
+			},
+		},
+		computed: {
+			getLoadingStatus() {
+				if(this.loadObj && this.loadObj.loading) {
+					return this.loadObj.loading
+				} else {
+					return "loading"
+				}
 			}
 		}
 	}
