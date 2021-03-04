@@ -88,6 +88,7 @@
 		},
 		methods: {
 			toDetail() {
+				this.$emit("clickCard")
 				console.log("到详情页面")
 			}
 		}

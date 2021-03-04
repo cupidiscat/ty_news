@@ -13,7 +13,7 @@
 					<view class="navbar_content_search_text">uni-app vue</view>
 				</view>
 				<view v-else class="navbar_content_search">
-					<input class="navbar_content_search_text" type="text" value="" placeholder="请输入您要搜索的内容" />
+					<input class="navbar_content_search_text" type="text" placeholder="请输入您要搜索的内容" @input="inputChange" v-model="val" />
 				</view>
 			</view>
 		</view>
@@ -27,13 +27,23 @@
 			return {
 				statusBarHeight: 0,
 				contentHeight: 45,
-				searchWidth: 720
+				searchWidth: 720,
+				val: ""
 			};
 		},
 		props: {
 			hasBackIcon: {
 				type: Boolean,
 				default: false
+			},
+			value: {
+				type: String,
+				default: ""
+			}
+		},
+		watch: {
+			value(newValue) {
+				this.val = newValue
 			}
 		},
 		created() {
@@ -57,6 +67,11 @@
 			},
 			toBack() {
 				uni.navigateBack()
+			},
+			inputChange(e) {
+				// console.log(e)
+				const { value } = e.detail
+				this.$emit("change", value)
 			}
 		}
 	}

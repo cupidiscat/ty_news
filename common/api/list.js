@@ -15,9 +15,16 @@ export const get_list = (data) => {
 }
 
 export const update_like = (data) => {
-	console.log("api中的数据", data)
+	// console.log("api中的数据", data)
 	return $http({
 		url: 'update_like',
+		data
+	})
+}
+
+export const get_search = (data) => {
+	return $http({
+		url: 'get_search',
 		data
 	})
 }
