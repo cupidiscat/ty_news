@@ -89,7 +89,10 @@
 		methods: {
 			toDetail() {
 				this.$emit("clickCard")
-				console.log("到详情页面")
+				// console.log("到详情页面")
+				uni.navigateTo({
+					url: "/pages/home-detail/home-detail"
+				})
 			}
 		}
 	}

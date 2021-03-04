@@ -12,8 +12,10 @@
 			</view>
 		</scroll-view>
 		<view class="tab_shezhi">
-			<view class="tab_shezhi_icon iconfont icon-shezhi">
-				
+			<view 
+			class="tab_shezhi_icon iconfont icon-shezhi"
+			@click="itemClick"
+			>
 			</view>
 		</view>
 	</view>
@@ -47,6 +49,11 @@
 			clickItem(index, item) {
 				this.currentIndex = index;
 				this.$emit("clickItem", item, index)
+			},
+			itemClick() {
+				uni.navigateTo({
+					url: "/pages/home-label/home-label"
+				})
 			}
 		}
 	}

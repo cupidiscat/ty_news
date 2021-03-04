@@ -32,6 +32,11 @@
 		},
 		onLoad() {
 			this.getLabel()
+			uni.$on("labelChange", res => {
+				// console.log("更新了")
+				this.showIndex = 0
+				this.getLabel()
+			})
 		},
 		methods: {
 			getLabel() {
