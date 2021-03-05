@@ -1,26 +1,26 @@
 <template>
 	<view class="detail">
 		<view class="detail-title">
-			我是一个前端开发者，我们要不要学习nodeJs?
+			{{articleDetail.title}}
 		</view>
 		<view class="detail-header">
 			<div class="detail-header-icon">
-				<image src="../../static/logo.png"></image>
+				<image :src="articleDetail.author.avatar"></image>
 			</div>
 			<div class="detail-header-info">
-				<view class="detail-header-info-name">cupidis</view>
+				<view class="detail-header-info-name">{{articleDetail.author.author_name}}</view>
 				<view class="detail-header-info-detail">
-					<view>2020-3-4 22:04</view>
-					<view>1234浏览</view>
-					<view>73赞</view>
+					<view>{{articleDetail.create_time}}</view>
+					<view>{{articleDetail.browse_count}} 浏览</view>
+					<view>{{articleDetail.comments_count}}赞</view>
 				</view>
 			</div>
 		</view>
 		<view class="detail-content">
-			文章详情
+			<parse :content="articleDetail.content"></parse>
 		</view>
 		<view class="detail-bottom">
-			<view class="detail-bottom-input">
+			<view class="detail-bottom-input" @click="showCommentView">
 				<text>谈谈你的看法</text>
 				<uni-icons type="compose" color="#F07373" size="22"></uni-icons>
 			</view>
@@ -36,18 +36,72 @@
 				</view>
 			</view>
 		</view>
+		<uni-popup type="bottom" ref="popup">
+			<view class="comment">
+				<view class="comment-header">
+					<view @click="close">取消</view>
+					<view @click="publish">发布</view>
+				</view>
+				<view class="comment-content">
+					<textarea class="comment-content-textarea" placeholder="请输入评论内容" maxlength="200" v-model="commentsValue" >
+						
+					</textarea>
+					<view class="comment-content-num">{{commentsValue.length}}/200</view>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 
 <script>
+	import parse from "../../components/gaoyia-parse/parse.vue"
+	import uniPopup from "../../components/uni-popup/uni-popup.vue"
+	
 	export default {
 		data() {
 			return {
-				
+				id: "",
+				articleDetail: {},
+				commentsValue: ""
 			}
 		},
+		components: {
+			parse,
+			uniPopup
+		},
+		onLoad(option) {
+			this.id = option.id;
+			this.getArticleDetail()
+		},
 		methods: {
-			
+			getArticleDetail() {
+				this.$api.get_detail({
+					article_id: this.id
+				}).then(res => {
+					console.log(res)
+					this.articleDetail = res.data
+				})
+			},
+			showCommentView() {
+				this.$refs.popup.open()
+			},
+			publish() {
+				if(this.commentsValue.length === 0) {
+					uni.showToast({
+						title: "请输入评论的内容"
+					})
+					return
+				}
+				this.$api.update_comment({
+					article_id: this.id,
+					content: this.commentsValue
+				}).then(res => {
+					console.log(res)
+				})
+			},
+			close() {
+				this.$refs.popup.close()
+			}
 		}
 	}
 </script>
@@ -99,8 +153,7 @@
 		}
 		.detail-content {
 			padding: 10px 15px;
-			border: 1px solid red;
-			height: 1000px;
+			// border: 1px solid red;
 		}
 		.detail-bottom {
 			position: fixed;
@@ -138,6 +191,37 @@
 				}
 			}
 		}
+		
+		.comment {
+			background-color: #FFFFFF;
+			padding: 0 15px;
+			.comment-header {
+				display: flex;
+				justify-content: space-between;
+				padding: 15px 0;
+				view:nth-child(1) {
+					color: #666;
+				}
+				view:nth-child(2) {
+					color: #007AFF;
+				}
+			}
+			.comment-content {
+				.comment-content-textarea {
+					border: 1px solid #eeeeee;
+					height: 400rpx;
+					width: 100%;
+				}
+				.comment-content-num {
+					padding: 15px 0;
+					display: flex;
+					justify-content: flex-end;
+					color: #333333;
+				}
+			}
+			
+		}
+		
 	}
 	
 </style>

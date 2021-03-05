@@ -91,7 +91,7 @@
 				this.$emit("clickCard")
 				// console.log("到详情页面")
 				uni.navigateTo({
-					url: "/pages/home-detail/home-detail"
+					url: "/pages/home-detail/home-detail?id="+this.model._id,
 				})
 			}
 		}
